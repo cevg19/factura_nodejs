@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@4.5.2/dist/litera/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="pdf.css">
+</head>
+
+<body>
+    <div class="container p-4">
+        <div class="row">
+            <div class="col-sm-4 offset-mmd-3">
+    <div class="card border-dark">
+        <div class="card-header border-dark">
+            <h3>Factura</h3>
+        </div>
+
+        <form action="/nueva-factura" method="POST">
+
+            <div class="card-body ">
+                <h6>Datos Cliente</h6>
+                <div class="input-group-sm mb-3">
+                    <input type="text" name="nombre" placeholder="Nombre" class="form-control" autofocus required="required">
+                </div>
+                <div class="input-group-sm mb-3">
+                    <input type="number" name="identificacion" placeholder="Identificacion" class="form-control" required="required">
+                </div>
+                <div class="input-group-sm mb-3">
+                    <input type="number" name="telefono" placeholder="Telefono" class="form-control" required="required">
+                </div>
+
+
+
+                <h6>Detalle factura</h6>
+                
+
+
+                <div class="inputs">
+                    <div class="input-group-sm mb-3">
+                        <input type="text" name="articulo" placeholder="Articulo" class="form-control"  required="required">
+                    </div>
+                    <div class="input-group-sm mb-3">
+                        <input type="number" name="valor" placeholder="Valor" class="form-control" required="required">
+                    </div>
+                    
+                    <div class="input-group-sm mb-3">
+                        <input type="number" name="cantidad" placeholder="Cantidad" class="form-control col-md-4" required="required">
+                    </div>
+                    
+                    <div class="input-group input-group-sm mb-3 ">
+                    
+                        <input type="number" name="iva" placeholder="IVA" class="form-control col-md-2 " required="required">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm">% </span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary mb-3 btn-sm " onclick="nuevo();">+</button>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-success " type="submit" >Guardar</button>   
+            </div>
+        </form>
+    </div>
+
+</div>
+<!-- LISTADO -->
+<div class="col-8 offset-mmd-3">
+    <div class="card border-dark">
+        <div class="card-header  border-dark">
+            <h3>Listado </h3>
+        </div>
+        <div class="card-body">
+           
+
+            <table class="table table-sm table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Identificacion</th>
+                        <th scope="col">Telefono</th>
+                        <th scope="col">Key</th>
+                        <th scope="col" colspan="2"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  <% %> 
+                    <% facturas.map((item,index) => { %>
+                    <tr>
+                        
+                        <td> <%= index+1 %></td>
+                        <td> <%= item.datos.nombre %></td>
+                        <td> <%= item.datos.identificacion %></td>
+                        <td> <%= item.datos.telefono %></td>
+                        <td> <%= item.id %></td>
+                        <td> <a href="/generar-factura/<%= item.id %>" class="btn btn-primary">Generar</a> </td>
+                        <td> <a href="/borrar-factura/<%= item.id %>" class="btn btn-danger">Eliminar</a> </td>
+                      
+                   
+                    </tr>
+                    <% }) %>
+
+                </tbody>
+            </table>
+           
+            <!-- <p>No hay registros...</p> -->
+           
+        </div>
+       
+        <!-- <h1>Listado </h1>
+        <ul class="list-group">
+            {{#each factura}}
+            <li class="list-group-item d-flex justify-content-between aling-items-center">
+                {{articulo}} 
+                {{valor}} 
+                {{cantidad}} 
+                {{iva}}
+                <a href="/borrar-factura/{{@key}}" class="btn btn-danger">Eliminar</a>
+            </li>
+            {{/each}}
+        </ul> --}} -->
+
+
+
+
+    </div>
+</div>
+
+<script>
+    let nuevo = function () {
+        $("<section/>").insertBefore("[class='inputs']")
+            .append($(".inputs").html())
+            .find("button")
+            .attr("onclick", "eliminar(this)")
+            .attr("class", "btn btn-danger mb-3 btn-sm")
+            .text("-");
+    }
+
+    let eliminar = function (obj) {
+        $(obj).closest("section").remove();
+    }
+</script>
+        </div>
+    </div>
+
+
+</body>
+
+</html>
